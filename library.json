@@ -1,6 +1,6 @@
 {
     "name": "htcw_esp_ip_loc",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Provides cross platform access to ip-api.org's ip geolocation service",
     "keywords": ["wifi", "esp32","geolocation"],
     "authors": {
@@ -10,6 +10,9 @@
     "license": "MIT",
     "frameworks": ["arduino", "espidf"],
     "platforms": "espressif32",
+    "dependencies": {
+        "codewitch-honey-crisis/htcw_json": "^0.2.2"
+    },
     "repository":
     {
         "type": "git",

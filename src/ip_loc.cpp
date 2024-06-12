@@ -153,9 +153,16 @@ bool ip_loc::fetch(float* out_lat,
     ip_loc_stream stm(client_handle);
 #endif
     ip_loc_json_reader.set(stm);
+    bool result = true;
     while(ip_loc_json_reader.read()) {
         if(ip_loc_json_reader.depth()==1 && ip_loc_json_reader.node_type()==json::json_node_type::field) {
-            if(out_lat!=nullptr && 0==strcmp("lat",ip_loc_json_reader.value())) {
+            if(0==strcmp("success",ip_loc_json_reader.value())) {
+                ip_loc_json_reader.read();
+                if(!ip_loc_json_reader.value_bool()) {
+                    result = false;
+                    break;
+                }
+            } else if(out_lat!=nullptr && 0==strcmp("lat",ip_loc_json_reader.value())) {
                 ip_loc_json_reader.read();
                 *out_lat = ip_loc_json_reader.value_real();
                 --count;
@@ -192,7 +199,7 @@ bool ip_loc::fetch(float* out_lat,
     esp_http_client_close(client_handle);
     esp_http_client_cleanup(client_handle);
 #endif
-    return true;
+    return result;
 }
 }
 #endif
